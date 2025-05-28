@@ -139,7 +139,7 @@
               >
                 +
               </button>
-              <span class="ml-3 text-gray-600">($4.50/dozen)</span>
+              <span class="ml-3 text-gray-600">($3.50/dozen)</span>
             </div>
           </div>
           <div>
@@ -193,7 +193,7 @@
   <script>
     function updateTotal() {
       const dozens = parseInt(document.getElementById('dozens') ? document.getElementById('dozens').value : 1) || 1;
-      const basePrice = dozens * 4.5;
+      const basePrice = dozens * 3.5;
       let discount = 0;
       const discountCheckbox = document.getElementById('returnCarton');
       if (discountCheckbox && discountCheckbox.checked) {
