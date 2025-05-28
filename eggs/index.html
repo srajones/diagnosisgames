@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daggott Farm Fresh Eggs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="max-w-2xl mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+      <div class="flex items-center mb-8">
+        <img src="eggs_logo.png" alt="Farm Logo" class="w-16 h-16 rounded-full mr-4" />
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800">Daggott Farm Fresh Eggs</h1>
+          <p class="text-gray-600">
+            Farm-fresh eggs from our family to yours.
+            <br>
+            Bring back your cartons and save $0.50 off per carton returned!
+          </p>
+        </div>
+      </div>
+
+      <!-- Using formspree.io for email handling -->
+      <form action="https://formspree.io/f/xzzdgplb" method="POST" class="space-y-6">
+        <!-- Radio Buttons -->
+        <div class="mb-6">
+          <span class="block text-gray-700 font-medium mb-2">I am a:</span>
+          <div class="flex items-center space-x-4">
+            <label class="flex items-center">
+              <input
+                type="radio"
+                name="userType"
+                value="glas"
+                checked
+                onchange="toggleFields()"
+                class="mr-1"
+              />
+              GLAS
+            </label>
+            <label class="flex items-center">
+              <input
+                type="radio"
+                name="userType"
+                value="sparrow"
+                onchange="toggleFields()"
+                class="mr-1"
+              />
+              Sparrow Employee
+            </label>
+            <label class="flex items-center">
+              <input
+                type="radio"
+                name="userType"
+                value="neighbor"
+                onchange="toggleFields()"
+                class="mr-1"
+              />
+              Neighbor
+            </label>
+          </div>
+        </div>
+
+        <!-- Contact Info (Always Visible) -->
+        <div>
+          <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
+            placeholder="John Smith"
+          />
+        </div>
+        <div>
+          <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
+            placeholder="(555) 555-5555"
+          />
+        </div>
+
+        <!-- Neighbor Extra Info (Only for Neighbor) -->
+        <div id="neighborExtra" style="display: none;">
+          <div>
+            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
+              placeholder="john@example.com"
+            />
+          </div>
+          <div>
+            <label for="address" class="block text-gray-700 font-medium mb-2">Delivery Address</label>
+            <textarea
+              id="address"
+              name="address"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
+              rows="3"
+              placeholder="123 Farm Lane&#10;Countryside, ST 12345"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Order Details (Always Visible) -->
+        <div id="orderDetails">
+          <div>
+            <label for="dozens" class="block text-gray-700 font-medium mb-2">Number of Dozen Eggs</label>
+            <div class="flex items-center">
+              <button
+                type="button"
+                onclick="decreaseAmount()"
+                class="px-4 py-2 bg-gray-200 rounded-l-md hover:bg-gray-300"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                id="dozens"
+                name="dozens"
+                required
+                class="w-20 px-4 py-2 border-y border-x-0 border-gray-300 text-center"
+                value="1"
+                min="1"
+                max="12"
+                onchange="updateTotal()"
+              />
+              <button
+                type="button"
+                onclick="increaseAmount()"
+                class="px-4 py-2 bg-gray-200 rounded-r-md hover:bg-gray-300"
+              >
+                +
+              </button>
+              <span class="ml-3 text-gray-600">($4.50/dozen)</span>
+            </div>
+          </div>
+          <div>
+            <label for="notes" class="block text-gray-700 font-medium mb-2">Special Notes</label>
+            <textarea
+              id="notes"
+              name="notes"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
+              rows="2"
+              placeholder="Any special delivery instructions or requests?"
+            ></textarea>
+          </div>
+          <div class="mt-4">
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                id="returnCarton"
+                name="returnCarton"
+                onchange="updateTotal()"
+                class="mr-2"
+              />
+              I'm returning previous egg cartons (discount: $0.50 off per carton)
+            </label>
+          </div>
+          <input type="hidden" name="total" id="totalInput" />
+          <div class="border-t border-gray-200 pt-6">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-gray-700 font-medium">Total:</span>
+              <span class="text-2xl font-bold text-gray-800">$<span id="totalPrice">4.50</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-6">
+          <button
+            type="submit"
+            class="w-full bg-green-700 text-white font-medium py-3 px-4 rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+          >
+            Place Order
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="mt-6 text-center text-gray-600 text-sm">
+      <p>Questions? Contact us at daggott.farm@outlook.com</p>
+    </div>
+  </div>
+
+  <script>
+    function updateTotal() {
+      const dozens = parseInt(document.getElementById('dozens') ? document.getElementById('dozens').value : 1) || 1;
+      const basePrice = dozens * 4.5;
+      let discount = 0;
+      const discountCheckbox = document.getElementById('returnCarton');
+      if (discountCheckbox && discountCheckbox.checked) {
+        discount = 0.5 * dozens;
+      }
+      const total = (basePrice - discount).toFixed(2);
+      if(document.getElementById('totalPrice')) {
+        document.getElementById('totalPrice').textContent = total;
+      }
+      if(document.getElementById('totalInput')) {
+        document.getElementById('totalInput').value = total;
+      }
+    }
+
+    function decreaseAmount() {
+      const input = document.getElementById('dozens');
+      if (input && parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+        updateTotal();
+      }
+    }
+
+    function increaseAmount() {
+      const input = document.getElementById('dozens');
+      if (input && parseInt(input.value) < 12) {
+        input.value = parseInt(input.value) + 1;
+        updateTotal();
+      }
+    }
+
+    function toggleFields() {
+      const userType = document.querySelector('input[name="userType"]:checked').value;
+      const neighborExtra = document.getElementById('neighborExtra');
+      if (userType === 'neighbor') {
+        neighborExtra.style.display = 'block';
+        Array.from(neighborExtra.querySelectorAll('input, textarea')).forEach((el) => {
+          el.disabled = false;
+        });
+      } else {
+        neighborExtra.style.display = 'none';
+        Array.from(neighborExtra.querySelectorAll('input, textarea')).forEach((el) => {
+          el.disabled = true;
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      toggleFields();
+      updateTotal();
+    });
+  </script>
+</body>
+</html>
